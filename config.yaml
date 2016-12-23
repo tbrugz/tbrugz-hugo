@@ -1,0 +1,11 @@
+---
+contentDir: "content"
+layoutDir: "layouts"
+publishDir: "public"
+indexes:
+  category: "categories"
+baseURL: "//tbrugz.github.io/"
+title: "tbrugz.github.io"
+theme: "Lanyon"
+canonifyURLs: true
+---
