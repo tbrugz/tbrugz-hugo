@@ -1,3 +1,4 @@
 [submodule "public"]
 	path = public
 	url = https://github.com/tbrugz/tbrugz.github.io.git
+	branch = master
