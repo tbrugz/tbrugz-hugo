@@ -12,8 +12,9 @@ date: "2016-12-26"
 library(dplyr)
 library(readr)
 library(ggplot2)
-library(knitr)
-options(knitr.table.format = 'markdown')
+#library(knitr)
+library(printr)
+#options(knitr.table.format = 'markdown')
 #options(digits = 6)
 knitr::opts_chunk$set(fig.width=10, fig.height=7, warning=FALSE, message=FALSE)
 #setwd("~/proj/r-sandbox/economics")
@@ -43,7 +44,7 @@ E assim podemos ver[^col1] quais são os países com maior taxa de juros (real) 
 vz<- tab %>% arrange(desc(interest_real)) %>%
   select(country, gdp, interest, inflation, interest_real, debt_gdp, population, continent) %>%
   top_n(20, interest_real)
-knitr::kable(vz)
+vz
 ```
 
 Então até parece que o Brasil não está tão mal, ficando na 17a posição, com um juro real de `6.76%`. Gambia está no topo, com `15.57%`. Mas também, combinar Gambia (PIB de 1bi) com Brasil (PIB de 1,7tri) é injusto. Então resolvi estabelecer uma linha de corte em 20bi pra ficar um pouco mais justo (Note-se que este filtro inclui as `r nrow(tab %>% filter(gdp>20))` maiores economias de um total de `r nrow(tab)` listadas no *tradingeconomics*).
@@ -53,7 +54,7 @@ t2<- filter(tab, gdp>20)
 vz<- t2 %>% arrange(desc(interest_real)) %>%
   select(country, gdp, interest, inflation, interest_real, debt_gdp, population, continent) %>%
   top_n(20, interest_real)
-knitr::kable(vz)
+vz
 ```
 
 Daí o Brasil passa para a 7a posição. É possível ver também os países que menor juros têm:
@@ -62,7 +63,7 @@ Daí o Brasil passa para a 7a posição. É possível ver também os países que
 vz<- t2 %>% arrange(interest_real) %>%
   select(country, gdp, interest, inflation, interest_real, debt_gdp, population, continent) %>%
   top_n(-10, interest_real)
-knitr::kable(vz)
+vz
 ```
 
 Destacam-se entre eles os países com inflação alta, em especial a Venezuela.
@@ -111,7 +112,7 @@ vz<- t2 %>% arrange(desc(debt_spending_real)) %>%
   select(country, gdp, interest, inflation, interest_real,
          debt_gdp, debt_spending_real, population, continent) %>%
   top_n(20, debt_spending_real)
-knitr::kable(vz)
+vz
 ```
 
 Na tabela acima podemos ver que o Brasil agora é o 3o colocado, atrás apenas de Líbano e Gana, sendo que o PIB desses países é de aproximadamente 1/40 o do Brasil (sim, continuamos desconsiderando países com PIB < 20bi US$). Note-se também que o valor do gasto estimado com juros (coluna *debt_spending_real*) do Brasil é de `4.47`, o que significa que o governo Brasileiro teria que gastar `4.47%` do PIB no pagamento de juros para que o montante permaceça constante (ou seja, para que a dívida não aumente).
