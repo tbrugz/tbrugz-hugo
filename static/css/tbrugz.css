@@ -1,0 +1,14 @@
+
+.nav {
+  max-width: 900px;
+}
+    
+.content {
+  max-width: 900px
+}
+
+@media (min-width: 600px) {
+  .content {
+    font-size: 17px;
+  }
+}

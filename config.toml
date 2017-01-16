@@ -47,6 +47,9 @@ ignoreFiles = ["\\.Rmd$", "_files$", "_cache$"]
 	# copyright = "Powered by [Hugo](//gohugo.io/) with the [Type Theme](//github.com/digitalcraftsman/hugo-type-theme)"
 	# copyright = "Released under the MIT license<br>Powered by [Hugo](//gohugo.io/) with the [Type Theme](//github.com/digitalcraftsman/hugo-type-theme)"
 
+	# see https://discuss.gohugo.io/t/how-to-override-css-classes-with-hugo/3033/4
+	custom_css = ["css/tbrugz.css"]
+
 	# options for highlight.js (version, additional languages, and theme)
 	highlightjsVersion = "9.9.0"
 	highlightjsLang = ["r", "yaml"]
