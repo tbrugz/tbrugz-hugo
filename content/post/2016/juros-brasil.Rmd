@@ -16,7 +16,8 @@ library(ggplot2)
 library(printr)
 #options(knitr.table.format = 'markdown')
 #options(digits = 6)
-knitr::opts_chunk$set(fig.width=10, fig.height=7, warning=FALSE, message=FALSE)
+#knitr::opts_chunk$set(fig.width=10, fig.height=7, warning=FALSE, message=FALSE)
+knitr::opts_chunk$set(warning=FALSE, message=FALSE, out.width="100%")
 #setwd("~/proj/r-sandbox/economics")
 ```
 
@@ -24,7 +25,7 @@ Então, esses dias uns amigos estavam comentando numa rede social sobre o juro b
 [certa noticia](http://oglobo.globo.com/economia/brasil-tem-maior-taxa-de-juro-real-do-mundo-19754404),
 e que tal informação não estaria completa visto que a notícia fala apenas das 40 maiores economias - e o [tradingeconomics](http://www.tradingeconomics.com/), com informação de 181 países, entrou no baile.
 
-Bom, resolvi pegar os dados e fazer uns experimentos - tudo usando a linguagem [R](https://www.r-project.org/). Inicialmente transformei a tabela da página inicial do *tradingeconomics* num arquivo CSV e o carreguei (ver [tradingecon.csv](/data/2016/tradingecon.csv), valores consultados em 22/dez/2016)
+Bom, resolvi pegar os dados e fazer uns experimentos - tudo usando a linguagem [R](https://www.r-project.org/). Inicialmente transformei a tabela da página inicial do *tradingeconomics* num arquivo CSV e o carreguei (ver [tradingecon.csv](/data/2016/tradingecon.csv) - valores consultados em 22/dez/2016)
 
 ```{r prepare, message=F}
 tab <- read_csv("../../../static/data/2016/tradingecon.csv")
@@ -47,7 +48,7 @@ vz<- tab %>% arrange(desc(interest_real)) %>%
 vz
 ```
 
-Então até parece que o Brasil não está tão mal, ficando na 17a posição, com um juro real de `6.76%`. Gambia está no topo, com `15.57%`. Mas também, combinar Gambia (PIB de 1bi) com Brasil (PIB de 1,7tri) é injusto. Então resolvi estabelecer uma linha de corte em 20bi pra ficar um pouco mais justo (Note-se que este filtro inclui as `r nrow(tab %>% filter(gdp>20))` maiores economias de um total de `r nrow(tab)` listadas no *tradingeconomics*).
+Então, de fato, o Brasil não está no topo, ficando na 17ª posição, com um juro real de `6.76%` (A notícia d'*oglobo* falava em `8.00%`, o que deixaria o Brasil na 11ª posição). Gambia está no topo, com `15.57%` de juro real. Mas comparar Gambia (PIB de US$ 1bi) com Brasil (PIB de US$ 1,7tri) é injusto. Então resolvi estabelecer uma linha de corte em US$ 20bi de PIB pra comparação ficar um pouco mais justa (Note-se que este filtro inclui as `r nrow(tab %>% filter(gdp>20))` maiores economias de um total de `r nrow(tab)` listadas no *tradingeconomics*).
 
 ```{r}
 t2<- filter(tab, gdp>20)
@@ -57,7 +58,7 @@ vz<- t2 %>% arrange(desc(interest_real)) %>%
 vz
 ```
 
-Daí o Brasil passa para a 7a posição. É possível ver também os países que menor juros têm:
+Daí o Brasil passa para a 7ª posição (estaria a 4ª se considerarmos o juro da matéria d'*oglobo*). É possível ver também os países que menor juros têm:
 
 ```{r}
 vz<- t2 %>% arrange(interest_real) %>%
@@ -66,8 +67,8 @@ vz<- t2 %>% arrange(interest_real) %>%
 vz
 ```
 
-Destacam-se entre eles os países com inflação alta, em especial a Venezuela.
-Vamos então tentar visualizar como se comportam os juros (reais) dos países
+Destacam-se entre os países com mais baixos juros os que possuem alta inflação, em especial a Venezuela.
+Vamos então visualizar como se comportam os juros (reais) dos países
 frente aos seus PIBs (removendo os países com juros < `-10%` a.a., pois estamos
 especialmente interessados em países com juros altos)
 
@@ -101,7 +102,7 @@ Dispêndio total com juros
 -------------------------
 
 Mas prestando atenção nas outras variáveis disponíveis há uma que parece promissora: a da dívida em relação ao PIB (`debt_gdp`).
-Afinal se temos a dívida e o juros, podemos saber o quanto um pais deve dispender para que sua dívida não aumente[^div1] (o valor do juro anual em relação ao montante da dívida). Assim calcularemos o `debt_spending_real`
+Afinal se temos a dívida e o juros, podemos saber o quanto um pais deve despender para que sua dívida não aumente[^div1] (o valor do juro anual em relação ao montante da dívida). Assim calcularemos o `debt_spending_real`.
 
 [^div1]: É importante ressaltar que a taxa básica de juros de uma economia pode não refletir a taxa de juros (média) que o país deve pagar pelo montante de sua dívida visto que a dívida normalmente é contratada ao longo de diversos anos e a taxa básica de juros pode variar, e bastante, durante este período.
 
@@ -115,31 +116,36 @@ vz<- t2 %>% arrange(desc(debt_spending_real)) %>%
 vz
 ```
 
-Na tabela acima podemos ver que o Brasil agora é o 3o colocado, atrás apenas de Líbano e Gana, sendo que o PIB desses países é de aproximadamente 1/40 o do Brasil (sim, continuamos desconsiderando países com PIB < 20bi US$). Note-se também que o valor do gasto estimado com juros (coluna *debt_spending_real*) do Brasil é de `4.47`, o que significa que o governo Brasileiro teria que gastar `4.47%` do PIB no pagamento de juros para que o montante permaceça constante (ou seja, para que a dívida não aumente).
+Na tabela acima podemos ver que o Brasil agora é o 3º colocado, atrás apenas de Líbano e Gana, sendo que o PIB desses países é de aproximadamente 1/40 o do Brasil (sim, continuamos desconsiderando países com PIB < 20bi US$). Note-se também que o valor do gasto estimado com juros (coluna `debt_spending_real`) do Brasil é de `4.47`, o que significa que o governo Brasileiro teria que gastar `4.47%` do PIB no pagamento de juros para que o montante permanecesse constante (ou seja, para que a dívida não aumentasse).
 
-Bom, então podemos visualizar a relação entre o dispêndio anual (teórico) em juros e a taxa básica de juros das diferentes economias:
+Bom, podemos visualizar a relação entre a dívida em relação ao PIB (`debt_gdp`) e a taxa básica de juros (`interest_real`) das diferentes economias para percebermos como estas variáveis tendem a se relacionar:
 
 ```{r fig_debtspending_interest}
 t2<- filter(tab, gdp>20, interest_real> -10)
 gg<- ggplot(t2)
-gg<- gg + aes(x= interest_real, y=debt_spending_real, size=gdp)
-gg + geom_point(aes(colour= continent)) + geom_text(data=filter(t2, debt_spending_real>2.5 | debt_spending_real< -2 | interest_real< -4 | interest_real> 10), aes(x= interest_real, y=debt_spending_real, label=country), hjust=-0.1, vjust=-0.1, size=3)
+gg<- gg + aes(x=interest_real, y=debt_gdp, size=gdp)
+gg + geom_point(aes(colour= continent)) + geom_text(data=filter(t2, debt_gdp>100 | interest_real< -4 | interest_real> 5), aes(x= interest_real, y=debt_gdp, label=country), hjust=-0.1, vjust=-0.1, size=3, angle=45)
 ```
 
+<!--
 Ou então entre o juro e o PIB:
 
-```{r fig_debtspending_gdp}
+```{r fig_debtspending_gdp, eval=FALSE}
 gg<- ggplot(t2)
 gg<- gg + aes(x= gdp, y=debt_spending_real)
 gg<- gg + geom_hline(yintercept = 0, colour="gray50")
 gg + geom_point(aes(colour= continent)) + geom_text(data=filter(t2, gdp>1000 | debt_spending_real>4 | debt_spending_real< -2), aes(x=gdp, y=debt_spending_real, label=country), hjust=-0.1, vjust=-0.1, size=3, angle=45)
 ```
+-->
 
-E aqui utilizando uma escala logaritmica para o PIB:
+Mas podemos também visualizar a relação entre o valor do gasto estimado com juros (coluna `debt_spending_real`) e o PIB (utilizando uma escala logaritmica para o PIB) - o que pode ser mais reveldor:
 
 ```{r fig_debtspending_interest_logx}
+gg<- ggplot(t2)
+gg<- gg + aes(x= gdp, y=debt_spending_real)
+gg<- gg + geom_hline(yintercept = 0, colour="gray50")
 gg<- gg + scale_x_log10()
 gg + geom_point(aes(colour= continent)) + geom_text(data=filter(t2, gdp>1000 | debt_spending_real>4 | debt_spending_real< -2), aes(x=gdp, y=debt_spending_real, label=country), hjust=-0.1, vjust=-0.1, size=3, angle=45)
 ```
 
-E daí da pra ver que sim, o Brasil *se destaca*...
+E daí dá pra ver que sim, o Brasil *se destaca*...
