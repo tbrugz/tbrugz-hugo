@@ -22,10 +22,10 @@ knitr::opts_chunk$set(warning=FALSE, message=FALSE, out.width="100%")
 ```
 
 Então, esses dias uns amigos estavam comentando numa rede social sobre o juro brasileiro, que seria o maior do mundo conforme
-[certa noticia](http://oglobo.globo.com/economia/brasil-tem-maior-taxa-de-juro-real-do-mundo-19754404),
+[certa noticia d'oglobo](http://oglobo.globo.com/economia/brasil-tem-maior-taxa-de-juro-real-do-mundo-19754404),
 e que tal informação não estaria completa visto que a notícia fala apenas das 40 maiores economias - e o [tradingeconomics](http://www.tradingeconomics.com/), com informação de 181 países, entrou no baile.
 
-Bom, resolvi pegar os dados e fazer uns experimentos - tudo usando a linguagem [R](https://www.r-project.org/). Inicialmente transformei a tabela da página inicial do *tradingeconomics* num arquivo CSV e o carreguei (ver [tradingecon.csv](/data/2016/tradingecon.csv) - valores consultados em 22/dez/2016)
+Bom, resolvi pegar os dados e fazer uns experimentos usando a linguagem [R](https://www.r-project.org/). Inicialmente transformei a tabela da página inicial do *tradingeconomics* num arquivo CSV e o carreguei (ver [tradingecon.csv](/data/2016/tradingecon.csv) - valores consultados em 22/dez/2016)
 
 ```{r prepare, message=F}
 tab <- read_csv("../../../static/data/2016/tradingecon.csv")
@@ -58,7 +58,7 @@ vz<- t2 %>% arrange(desc(interest_real)) %>%
 vz
 ```
 
-Daí o Brasil passa para a 7ª posição (estaria a 4ª se considerarmos o juro da matéria d'*oglobo*). É possível ver também os países que menor juros têm:
+Daí o Brasil passa para a 7ª posição (estaria na 4ª se considerarmos o juro da matéria d'*oglobo*). É possível ver também os países que menor juros têm:
 
 ```{r}
 vz<- t2 %>% arrange(interest_real) %>%
@@ -102,7 +102,7 @@ Dispêndio total com juros
 -------------------------
 
 Mas prestando atenção nas outras variáveis disponíveis há uma que parece promissora: a da dívida em relação ao PIB (`debt_gdp`).
-Afinal se temos a dívida e o juros, podemos saber o quanto um pais deve despender para que sua dívida não aumente[^div1] (o valor do juro anual em relação ao montante da dívida). Assim calcularemos o `debt_spending_real`.
+Afinal se temos a dívida e o juros, podemos saber o quanto um pais deve despender para que sua dívida não aumente[^div1] (este valor equivale ao montante da dívida multiplicado pelo juro real anual). Assim calcularemos o `debt_spending_real`.
 
 [^div1]: É importante ressaltar que a taxa básica de juros de uma economia pode não refletir a taxa de juros (média) que o país deve pagar pelo montante de sua dívida visto que a dívida normalmente é contratada ao longo de diversos anos e a taxa básica de juros pode variar, e bastante, durante este período.
 
@@ -118,7 +118,7 @@ vz
 
 Na tabela acima podemos ver que o Brasil agora é o 3º colocado, atrás apenas de Líbano e Gana, sendo que o PIB desses países é de aproximadamente 1/40 o do Brasil (sim, continuamos desconsiderando países com PIB < 20bi US$). Note-se também que o valor do gasto estimado com juros (coluna `debt_spending_real`) do Brasil é de `4.47`, o que significa que o governo Brasileiro teria que gastar `4.47%` do PIB no pagamento de juros para que o montante permanecesse constante (ou seja, para que a dívida não aumentasse).
 
-Bom, podemos visualizar a relação entre a dívida em relação ao PIB (`debt_gdp`) e a taxa básica de juros (`interest_real`) das diferentes economias para percebermos como estas variáveis tendem a se relacionar:
+Bom, podemos elaborar um gráfico com a dívida em relação ao PIB (`debt_gdp`) e a taxa básica de juros (`interest_real`) das diferentes economias para percebermos como estas variáveis tendem a se relacionar:
 
 ```{r fig_debtspending_interest}
 t2<- filter(tab, gdp>20, interest_real> -10)
@@ -138,7 +138,9 @@ gg + geom_point(aes(colour= continent)) + geom_text(data=filter(t2, gdp>1000 | d
 ```
 -->
 
-Mas podemos também visualizar a relação entre o valor do gasto estimado com juros (coluna `debt_spending_real`) e o PIB (utilizando uma escala logaritmica para o PIB) - o que pode ser mais reveldor:
+Note-se no gráfico acima que muitas economias importantes possuem montante de dívida em relação ao PIB (eixo Y - `debt_gdp`) maior que o brasileiro, entretanto estas economias têm, em geral, um juro real baixo.
+
+Podemos também, e por fim, visualizar a relação entre o valor do gasto estimado com juros (coluna `debt_spending_real`) e o PIB (utilizando uma escala logaritmica para o PIB) - o que pode ser mais reveldor:
 
 ```{r fig_debtspending_interest_logx}
 gg<- ggplot(t2)
