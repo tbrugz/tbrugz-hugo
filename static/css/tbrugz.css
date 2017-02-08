@@ -12,3 +12,8 @@
     font-size: 17px;
   }
 }
+
+article table {
+  overflow-x: auto;
+  display: block;  
+}
