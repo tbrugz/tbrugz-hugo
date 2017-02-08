@@ -19,6 +19,14 @@
   {{ end }}
 {{ end }}
 
+{{if .Params.image }}
+   <meta property="og:image" content="{{ .Site.BaseURL }}{{.Params.image}}"/>
+{{else}}
+    {{if .Site.Params.cover}}
+        <meta property="og:image" content="{{ .Site.BaseURL }}{{.Site.Params.cover}}"/>
+    {{end}}
+{{end}}
+
 {{ if .Keywords }}
 <meta property="keywords" content ="{{ delimit .Keywords ", " }}">
 {{ end }}
