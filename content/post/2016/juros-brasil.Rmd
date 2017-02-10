@@ -2,7 +2,7 @@
 title: "Juros-Brasil"
 author: "Telmo Brugnara"
 date: "2016-12-26"
-image: "figures/fig_interest_real-1.png"
+image: "https://tbrugz.github.io/2016/juros-brasil/figures/fig_interest_real-1.png"
 #output: 
   #html_document: 
     #keep_md: yes
