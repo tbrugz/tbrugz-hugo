@@ -55,6 +55,10 @@ blogdown::serve_site()
 
 & go to <http://127.0.0.1:4321/> (was <http://localhost:1313/>)
 
+*Preview site diff*
+
+`git -C public diff`
+
 *Deploy to Github (from "public" folder - should be a git submodule)*
 
 `./deploy.sh`
@@ -67,5 +71,6 @@ misc notes
 
 ```r
 blogdown::hugo_cmd("version")
+blogdown::hugo_cmd("config")
 blogdown::hugo_cmd("--help")
 ```
