@@ -1,12 +1,12 @@
 
-repo_stats <- function() {
+repo_info <- function() {
   id <- system2("git","log --pretty=format:'%h // %ai' -n 1", stdout = T)
+  # XXX grab theme name from config.toml... also grab theme remote
   theme <- "themes/hugo-lithium-theme/"
   themeId <- system2("git",paste0("-C ",theme, " log --pretty=format:'%h // %ai' -n 1"),
                      stdout = T)
   hugo_version <- system2("hugo", "version", stdout = T)
-  #XXX R,blogdown,knitr version?
-  
+
   list("hugo.version"=hugo_version, "hugo.theme"=theme,
        "git.hash"=id, "git.theme.hash"=themeId,
        "R.version"=R.version.string,
@@ -14,6 +14,14 @@ repo_stats <- function() {
        "knitr.version"=as.character(packageVersion("knitr")))
 }
 
-## write_lines(repo_stats(), "repo_stats.txt")
-# st<-repo_stats()
-# write_lines(paste(names(st), unlist(st), sep=": "),  "repo_stats.txt")
+write_repo_info <- function() {
+  st<-repo_info()
+  write_lines(paste(names(st), st, sep=": "),  "repo_info.txt")
+}
+
+## write_lines(repo_info.txt(), "repo_info.txt")
+# library(readr)
+# st<-repo_info.txt()
+# write_lines(paste(names(st), unlist(st), sep=": "),  "repo_info.txt")
+#
+# write_repo_info()
