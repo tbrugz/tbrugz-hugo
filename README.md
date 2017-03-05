@@ -57,7 +57,8 @@ blogdown::serve_site()
 
 *Preview site diff*
 
-`git -C public diff`
+`git -C public diff`  
+`git -C public diff --stat`
 
 *Deploy to Github (from "public" folder - should be a git submodule)*
 
