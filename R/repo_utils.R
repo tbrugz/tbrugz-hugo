@@ -1,17 +1,24 @@
 
+library(readr)
+
 repo_info <- function() {
-  id <- system2("git","log --pretty=format:'%h // %ai' -n 1", stdout = T)
+  log_cmd_args <- " log --pretty=format:'%h // %ai' -n 1"
+  
+  id <- system2("git", log_cmd_args, stdout = T)
   # XXX grab theme name from config.toml... also grab theme remote
   theme <- "themes/hugo-lithium-theme/"
-  themeId <- system2("git",paste0("-C ",theme, " log --pretty=format:'%h // %ai' -n 1"),
-                     stdout = T)
+  themeId <- system2("git",paste0("-C ", theme, log_cmd_args), stdout = T)
   hugo_version <- system2("hugo", "version", stdout = T)
 
-  list("hugo.version"=hugo_version, "hugo.theme"=theme,
-       "git.hash"=id, "git.theme.hash"=themeId,
+  list("hugo.version"=hugo_version,
+       "hugo.theme"=theme,
+       #"git.hash"=id,
+       "git.theme.hash"=themeId,
        "R.version"=R.version.string,
        "blogdown.version"=as.character(packageVersion("blogdown")),
-       "knitr.version"=as.character(packageVersion("knitr")))
+       "ggplot2.version"=as.character(packageVersion("ggplot2")),
+       "knitr.version"=as.character(packageVersion("knitr"))
+       )
 }
 
 write_repo_info <- function() {

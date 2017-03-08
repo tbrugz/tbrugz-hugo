@@ -1,7 +1,7 @@
 hugo.version: Hugo Static Site Generator v0.18.1 BuildDate: 2017-01-12T16:23:41-02:00
 hugo.theme: themes/hugo-lithium-theme/
-git.hash: 40de1f3 // 2017-03-02 22:56:27 -0300
 git.theme.hash: 7d436d8 // 2017-01-05 13:18:52 -0600
 R.version: R version 3.3.2 (2016-10-31)
 blogdown.version: 0.0.12
+ggplot2.version: 2.1.0
 knitr.version: 1.15.1
