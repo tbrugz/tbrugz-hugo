@@ -9,16 +9,9 @@ image: "https://tbrugz.github.io/2017/salario-minimo/figures/periodos-1.png"
 ---
 
 ```{r setup, include=FALSE}
-library(readr)
-library(dplyr)
-library(ggplot2)
-library(scales)
-library(lubridate)
-
 library(printr)
 # http://stackoverflow.com/questions/20060518/in-rstudio-rmarkdown-how-to-setwd
 rootdir <- "~/proj/tbrugz-hugo/static/data"
-#knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(root.dir = rootdir)
 knitr::opts_knit$set(root.dir = rootdir)
 #knitr::opts_chunk$set(out.width="100%")
@@ -32,6 +25,8 @@ Me chamou a atenção um dia desses
 Bom, primeiramente precisaria de uma série dos valores históricos do salário mímino. Achei duas que pareciam promissoras: [portal brasil](http://www.portalbrasil.net/salariominimo.htm) e [trt3](http://www.trt3.jus.br/informe/calculos/minimo.htm). Deixando de lado a parte do scrapping, aqui está uma amostra da tabela - *ver arquivo [salario_minimo_br.csv](2017/salario_minimo_br.csv)*:
 
 ```{r tab_sm}
+library(readr)
+library(dplyr)
 salario_minimo <- read_csv("2017/salario_minimo_br.csv")
 salario_minimo %>% sample_n(10) %>% arrange(data)
 ```
@@ -46,6 +41,10 @@ moedas
 Note-se que a coluna `divisor` mostra a relação entre duas moedas subsequentes (ex: para converter *Cruzeiro Real* em *Real* devemos dividir o valor por `2750`). Assim vamos converter todos os valores históricos para Reais (R$):
 
 ```{r parareais}
+library(lubridate)
+library(ggplot2)
+library(scales)
+
 para_reais <- function(valor, data) {
   y<-year(data)
   if(y>1994) return(valor)
@@ -111,7 +110,6 @@ De posse do índice de preços podemos agora atualizar os valores históricos (n
 
 ```{r fator_correcao}
 ipc<-filter(ipc, data<=ymd("2017-01-01"))
-#ipc<-ipc[1:936,]
 
 ipc_fcs <- function() {
   fc <- numeric(nrow(ipc))
