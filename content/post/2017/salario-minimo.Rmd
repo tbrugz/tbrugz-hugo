@@ -12,6 +12,7 @@ image: "https://tbrugz.github.io/2017/salario-minimo/figures/periodos-1.png"
 library(printr)
 # http://stackoverflow.com/questions/20060518/in-rstudio-rmarkdown-how-to-setwd
 rootdir <- "~/proj/tbrugz-hugo/static/data"
+#rootdir <- paste0(getwd(), "static/data")
 knitr::opts_chunk$set(root.dir = rootdir)
 knitr::opts_knit$set(root.dir = rootdir)
 #knitr::opts_chunk$set(out.width="100%")
@@ -20,9 +21,9 @@ set.seed(42);
 ```
 
 Me chamou a atenção um dia desses
-[um artigo](http://jopbj.blogspot.com.br/2016/11/a-luta-pelo-salario-minimo-no-brasil.html) que mostrava a evolução do salário mínimo brasileiro real (descontada a inflação) ao longo do tempo - além de mostrar sob qual governo/período o país se encontrava. Achei interessante e logo comecei a imaginar como faria para elaborar um gráfico semelhante no R.
+[um artigo](http://jopbj.blogspot.com.br/2016/11/a-luta-pelo-salario-minimo-no-brasil.html) que mostrava a evolução do salário mínimo brasileiro real (descontada a inflação) ao longo do tempo - além de mostrar sob qual governo/período o país se encontrava. Achei interessante e logo comecei a imaginar como faria para elaborar um gráfico semelhante no `R`.
 
-Bom, primeiramente precisaria de uma série dos valores históricos do salário mímino. Achei duas que pareciam promissoras: [portal brasil](http://www.portalbrasil.net/salariominimo.htm) e [trt3](http://www.trt3.jus.br/informe/calculos/minimo.htm). Deixando de lado a parte do scrapping, aqui está uma amostra da tabela - *ver arquivo [salario_minimo_br.csv](2017/salario_minimo_br.csv)*:
+Bom, primeiramente precisaria de uma série dos valores históricos do salário mímino. Achei duas que pareciam promissoras: [portal brasil](http://www.portalbrasil.net/salariominimo.htm) e [trt3](http://www.trt3.jus.br/informe/calculos/minimo.htm). Deixando de lado a parte do *scrapping*, aqui está uma amostra da tabela - *ver arquivo [salario_minimo_br.csv](/data/2017/salario_minimo_br.csv)*:
 
 ```{r tab_sm}
 library(readr)
@@ -31,7 +32,7 @@ salario_minimo <- read_csv("2017/salario_minimo_br.csv")
 salario_minimo %>% sample_n(10) %>% arrange(data)
 ```
 
-Para conseguirmos comparar os diferentes valores de salários mínimos precisamos primeiramente ter uma base comum, e em diferentes épocas tivemos diferentes moedas - o que torna o trabalho mais *interessante*. Assim fui buscar os dados sobre as moedas na [wikipedia](https://pt.wikipedia.org/wiki/Lista_de_moedas_do_Brasil). Estão aí - *ver arquivo [moedas_br.csv](2017/moedas_br.csv)*:
+Para conseguirmos comparar os diferentes valores de salários mínimos precisamos primeiramente ter uma base comum, e em diferentes épocas tivemos diferentes moedas - o que torna o trabalho mais *interessante*. Assim fui buscar os dados sobre as moedas na [wikipedia](https://pt.wikipedia.org/wiki/Lista_de_moedas_do_Brasil). Estão aí - *ver arquivo [moedas_br.csv](/data/2017/moedas_br.csv)*:
 
 ```{r tab_moedas}
 moedas <- read_csv("2017/moedas_br.csv")
@@ -75,7 +76,7 @@ ggplot(sm, aes(data, vr)) + geom_line() + scale_y_log10() +
   labs(y="valor em R$")
 ```
 
-No gráfico acima podemos ver como se comportou o salário mínimo em termos absolutos (valores em R$ - escala logarítmica). Mas pouco se pode dizer do salário mínimo em termos reais - apenas que, se o poder de compra do saĺario mínimo teve pouca alteração, a inflação foi muito alta - em especial a partir da década de 1980 até o plano real (1994).
+No gráfico acima podemos ver como se comportou o salário mínimo em termos absolutos (valores em R$ - escala logarítmica). Mas pouco se pode dizer do salário mínimo em termos reais - apenas que, se o poder de compra do salário mínimo teve pouca alteração, a inflação foi muito alta - em especial a partir da década de 1980 até o plano real (1994).
 
 
 Salário Mínimo real
@@ -106,7 +107,7 @@ ipc$mes <- month(ipc$data)
 ggplot(ipc, aes(data, valor)) + geom_line()
 ```
 
-De posse do índice de preços podemos agora atualizar os valores históricos (nominais) do salário mínimo para obtermos o salário mínimo real. Faremos isso usando como base a data da última atualização do valor (2017-01-01), ou seja, todos os outros valores serão corrigidos (atualizados) para esta data. Para tanto incluiremos a coluna `fc` (fatores de correção) no *data.frame* `ipc`.
+De posse do índice de preços podemos agora atualizar os valores históricos (nominais) do salário mínimo para obtermos o salário mínimo real. Faremos isso usando como base a data da última atualização do valor (2017-01-01), ou seja, todos os outros valores serão corrigidos (atualizados) para esta data. Para tanto incluiremos a coluna `fc` (fatores de correção) no *data.frame* `ipc` (abaixo uma amostra - 10 linhas - da tabela).
 
 ```{r fator_correcao}
 ipc<-filter(ipc, data<=ymd("2017-01-01"))
@@ -170,7 +171,7 @@ ggplot() +
 Dados do IPEA
 -------------
 
-Bom, depois de elaborar o gráfico com o valor do salário mínimo atualizado pelo IPC/Fipe, resolvi comparar com o gráfico do artigo que iniciou tudo isso e vi que ele atribuia a série dos valore reais do salário mínimo ao Ipea. Então, ao procurar no Ipeadata achei a série **37667- Salário mínimo real**[^serie37667] (Note-se que esta série usa o IPC-Fipe para valores entre 1940 e 1944, mas outros índices de preços em outros períodos). Bom, vamos comparar então as séries do Ipea com a do IPC, retirada do site do banco central. Após uma série de tentativas e erros consegui chegar no código abaixo para baixar uma série do Ipeadata.
+Bom, depois de elaborar o gráfico com o valor do salário mínimo atualizado pelo IPC/Fipe, resolvi comparar com o gráfico do artigo que iniciou tudo isso e vi que ele atribuia a série dos valore reais do salário mínimo ao Ipea. Então, ao procurar no Ipeadata achei a série **37667- Salário mínimo real**[^serie37667] (Note-se que esta série usa o IPC-Fipe para valores entre 1940 e 1944, mas outros índices de preços em outros períodos). Bom, vamos comparar então as séries do Ipea com a do IPC, retirada do site do banco central. Após algumas tentativas e erros foi possível chegar no código abaixo para baixar uma série do Ipeadata.
 
 [^serie37667]: Conforme o site do Ipeadata, a série **37667 - Salário mínimo real**, é assim definida: *Série em reais (R$) constantes do último mês, elaborada pelo IPEA, deflacionando-se o salário mínimo nominal pelo Índice Nacional de Preços ao Consumidor (INPC) do IBGE a partir de março de 1979. Para períodos anteriores, os deflatores utilizados foram o IGPC-Mtb (jan/1948-mar/1979), o IPC-RJ/FGV (jan/1944-jan/1948) e o IPC-SP/Fipe (jul/1940-jan/1944). O salário mínimo urbano foi instituído no Brasil por decreto-lei do presidente Getúlio Vargas, durante a ditadura do Estado Novo, e começou a vigorar em julho de 1940, com valores diferenciados entre estados e sub-regiões. Em 1943, foi incorporado à Consolidação das Leis do Trabalho (CLT) e, em 1963, foi estendido ao campo por meio do Estatuto do Trabalhador Rural. Foi nacionalmente unificado em maio de 1984, mas, desde 2000, a Lei Complementar 103 permite que os estados fixem pisos estaduais superiores ao mínimo nacional. Os dados desta série para o período em que a legislação federal definia faixas diversificadas referem-se sempre ao maior salário mínimo vigente no país*.
 
@@ -217,5 +218,16 @@ ggplot() +
   expand_limits(y = 0) + scale_fill_brewer(palette = "Set3")
 ```
 
-Bom, e o que podemos observar? Bem, primeiramente que a escolha do índice de preços pode mudar bastante os valores de uma série de preços - justamente porque são correções cumulativas que têm um efeito exponencial (pense em juros compostos). A diferença entre os valores de salário mínimo de 1940 até meados dos anos 1990 é bem grande, apesar de os valores terem comportamentos semelhantes. Outra observação é a de que a partir do início dos anos 2000 há uma tendência persistente de alta no valor do salário mínimo real.
+Bom, após essas experimentações com séries de salário mínimo e inflação, o que podemos concluir? Algumas observações possíveis:
 
+1. A escolha do índice de preços pode mudar bastante os valores de uma série de preços - justamente porque são correções cumulativas que têm um efeito exponencial (pense em juros compostos). A diferença entre os valores de salário mínimo de 1940 até meados dos anos 1990 é bem grande, apesar de os valores terem comportamentos semelhantes. 
+
+2. A partir do início dos anos 2000 há uma tendência persistente de alta no valor do salário mínimo real. Esta foi e é uma importante política econômica para a diminuição da desigualdade,
+[conforme Piketty](http://www.bbc.com/portuguese/noticias/2014/11/141127_piketty_entrevista_ru_lgb) - entre outros.
+
+3. Achei um tanto curioso que, em geral, os índices de preços ao consumidor (como o IPC/Fipe,
+[IPCA e INPC/IBGE](http://www.ibge.gov.br/home/estatistica/indicadores/precos/inpc_ipca/defaultinpc.shtm)
+e IPC/FGV) usem o salário mínimo para fazer o recorte da população que será amostrada. Caso tenhamos um aumento real do salário mínimo (como foi o caso dos últimos 10-15 anos), o índice passará a refletir o consumo de uma parcela maior da população com o tempo. Acredito que isso possa, com o tempo, enviesar o índice. Isso de certa forma me lembrou da
+[súmula vinculante 4 do STF](http://www.stf.jus.br/portal/jurisprudencia/menuSumario.asp?sumula=1195), que peconiza que "o salário mínimo não pode ser usado como indexador de base de cálculo de vantagem de servidor público ou de empregado", o que pra mim, leigo no assunto, parece fazer sentido.
+
+Por fim, vale lembrar que os códigos em `R` acima são experimentais, não foram desenvolvidos pensando em performance e podem conter erros. Sugestões de melhoria de código são bem-vindas. 
