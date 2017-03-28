@@ -8,11 +8,15 @@ image: "https://tbrugz.github.io/2017/salario-minimo/figures/periodos-1.png"
 #output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=F}
 library(printr)
 # http://stackoverflow.com/questions/20060518/in-rstudio-rmarkdown-how-to-setwd
-rootdir <- "~/proj/tbrugz-hugo/static/data"
+#rootdir <- "~/proj/tbrugz-hugo/static/data"
+#rootdir <- "~/Desktop/proj/tbrugz-hugo/static/data"
+rootdir <- "../../../static/data"
 #rootdir <- paste0(getwd(), "static/data")
+#print(getwd())
+#print(rootdir)
 knitr::opts_chunk$set(root.dir = rootdir)
 knitr::opts_knit$set(root.dir = rootdir)
 #knitr::opts_chunk$set(out.width="100%")
@@ -32,7 +36,7 @@ salario_minimo <- read_csv("2017/salario_minimo_br.csv")
 salario_minimo %>% sample_n(10) %>% arrange(data)
 ```
 
-Para conseguirmos comparar os diferentes valores de salários mínimos precisamos primeiramente ter uma base comum, e em diferentes épocas tivemos diferentes moedas - o que torna o trabalho mais *interessante*. Assim fui buscar os dados sobre as moedas na [wikipedia](https://pt.wikipedia.org/wiki/Lista_de_moedas_do_Brasil). Estão aí - *ver arquivo [moedas_br.csv](/data/2017/moedas_br.csv)*:
+Para conseguirmos comparar os diferentes valores de salários mínimos precisamos primeiramente ter uma base comum, e em diferentes épocas tivemos diferentes moedas - o que torna o trabalho mais *interessante*. Assim fui buscar os dados sobre as moedas na [Wikipédia](https://pt.wikipedia.org/wiki/Lista_de_moedas_do_Brasil). Estão aí - *ver arquivo [moedas_br.csv](/data/2017/moedas_br.csv)*:
 
 ```{r tab_moedas}
 moedas <- read_csv("2017/moedas_br.csv")
@@ -88,9 +92,9 @@ do [IBGE](http://seriesestatisticas.ibge.gov.br/) e
 do [IPEA](http://www.ipeadata.gov.br/).
 
 Como o 1º valor de salário mínimo é de 1940, encontrei apenas
-o [IPC da Fipe](http://www.fipe.org.br/pt-br/indices/ipc/) que retroage até esta data (isso no sistema de séries temporais do banco central). Interessante notar que o IPC *estima as variações do custo de vida das famílias com renda familiar entre 1 e 10 salários mínimos*, então usar um indicador definido a partir do salário mínimo para estimar o valor real (atualizado) do salário mínimo é algo meio recursivo, mas enfim...
+o [IPC da Fipe](http://www.fipe.org.br/pt-br/indices/ipc/) retroagindo até esta data (isso no sistema de séries temporais do banco central). Interessante notar que o IPC *estima as variações do custo de vida das famílias com renda familiar entre 1 e 10 salários mínimos*, então usar um indicador definido a partir do salário mínimo para estimar o valor real (atualizado) do salário mínimo é algo meio recursivo, mas enfim...
 
-Após carregarmos o IPC a partir da API do banco central (série 193) podemos ver, na figura abaixo, o comportamento do índice ao longo do tempo.
+Após carregarmos o IPC a partir da API do banco central - *série 193* - podemos ver, na figura abaixo, o comportamento do índice ao longo do tempo.
 
 ```{r bcb, eval=F}
 bcb_url <- paste0('http://api.bcb.gov.br/dados/serie/bcdata.sgs.',
@@ -99,7 +103,7 @@ download.file(bcb_url, "2017/bcb193.csv")
 ```
 
 ```{r bcb_plot}
-ipc <- read_csv("2017/bcb193.csv")
+ipc <- read_csv2("2017/bcb193.csv")
 ipc$data <- dmy(ipc$data)
 ipc$ano <- year(ipc$data)
 ipc$mes <- month(ipc$data)
@@ -223,11 +227,12 @@ Bom, após essas experimentações com séries de salário mínimo e inflação,
 1. A escolha do índice de preços pode mudar bastante os valores de uma série de preços - justamente porque são correções cumulativas que têm um efeito exponencial (pense em juros compostos). A diferença entre os valores de salário mínimo de 1940 até meados dos anos 1990 é bem grande, apesar de os valores terem comportamentos semelhantes. 
 
 2. A partir do início dos anos 2000 há uma tendência persistente de alta no valor do salário mínimo real. Esta foi e é uma importante política econômica para a diminuição da desigualdade,
-[conforme Piketty](http://www.bbc.com/portuguese/noticias/2014/11/141127_piketty_entrevista_ru_lgb) - entre outros.
+[conforme Piketty](http://www.bbc.com/portuguese/noticias/2014/11/141127_piketty_entrevista_ru_lgb) (entre outros).
 
 3. Achei um tanto curioso que, em geral, os índices de preços ao consumidor (como o IPC/Fipe,
 [IPCA e INPC/IBGE](http://www.ibge.gov.br/home/estatistica/indicadores/precos/inpc_ipca/defaultinpc.shtm)
-e IPC/FGV) usem o salário mínimo para fazer o recorte da população que será amostrada. Caso tenhamos um aumento real do salário mínimo (como foi o caso dos últimos 10-15 anos), o índice passará a refletir o consumo de uma parcela maior da população com o tempo. Acredito que isso possa, com o tempo, enviesar o índice. Isso de certa forma me lembrou da
+e IPC/FGV) usem o salário mínimo para fazer o recorte da população que será amostrada. Caso tenhamos um aumento real do salário mínimo (como foi o caso dos últimos 10-15 anos), o índice passará a refletir o consumo de uma parcela maior da população com o tempo. Acredito que isso *poderia*, com o tempo, enviesar o índice - entretanto para fazer tal afirmação seria importante analisar a metodologia de cada índice de preços.
+A propósito, isto de certa forma me lembrou da
 [súmula vinculante 4 do STF](http://www.stf.jus.br/portal/jurisprudencia/menuSumario.asp?sumula=1195), que peconiza que "o salário mínimo não pode ser usado como indexador de base de cálculo de vantagem de servidor público ou de empregado", o que pra mim, leigo no assunto, parece fazer sentido.
 
 Por fim, vale lembrar que os códigos em `R` acima são experimentais, não foram desenvolvidos pensando em performance e podem conter erros. Sugestões de melhoria de código são bem-vindas. 
