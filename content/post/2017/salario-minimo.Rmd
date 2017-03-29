@@ -231,7 +231,7 @@ Bom, após essas experimentações com séries de salário mínimo e inflação,
 
 3. Achei um tanto curioso que, em geral, os índices de preços ao consumidor (como o IPC/Fipe,
 [IPCA e INPC/IBGE](http://www.ibge.gov.br/home/estatistica/indicadores/precos/inpc_ipca/defaultinpc.shtm)
-e IPC/FGV) usem o salário mínimo para fazer o recorte da população que será amostrada. Caso tenhamos um aumento real do salário mínimo (como foi o caso dos últimos 10-15 anos), o índice passará a refletir o consumo de uma parcela maior da população com o tempo. Acredito que isso *poderia*, com o tempo, enviesar o índice - entretanto para fazer tal afirmação seria importante analisar a metodologia de cada índice de preços.
+e IPC/FGV) usem o salário mínimo para fazer o recorte da população que será amostrada. Caso tenhamos um aumento real do salário mínimo (como foi o caso dos últimos 10-15 anos), o índice passará a refletir o consumo de uma parcela maior da população com o tempo. Acredito que isso *poderia*, com o tempo, enviesar o índice - entretanto para fazer tal afirmação seria importante analisar em detalhe a metodologia de cada índice de preços.
 A propósito, isto de certa forma me lembrou da
 [súmula vinculante 4 do STF](http://www.stf.jus.br/portal/jurisprudencia/menuSumario.asp?sumula=1195), que peconiza que "o salário mínimo não pode ser usado como indexador de base de cálculo de vantagem de servidor público ou de empregado", o que pra mim, leigo no assunto, parece fazer sentido.
 
