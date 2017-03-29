@@ -40,7 +40,7 @@ ignoreFiles = ["\\.Rmd$", "_files$", "_cache$"]
 	# avatar = "img/avatar.png"
 	# or use Gravatar by adding your email address to generate a unique avatar
 	gravatar = "tbrugz@gmail.com"
-	baseurl = "https://tbrugz.github.io/"
+	baseurl = "https://tbrugz.github.io"
 
 	# headerText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br><br>Remove all header text in **config.toml** to disable this feature."
 	# To add a header background to the main site, save your image under static/img/.

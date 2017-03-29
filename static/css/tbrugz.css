@@ -11,6 +11,9 @@
   .content {
     font-size: 17px;
   }
+  pre {
+    font-size: 14px;
+  }
 }
 
 article table {
