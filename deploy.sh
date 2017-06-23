@@ -1,6 +1,8 @@
 #!/bin/bash
 # see: https://gohugo.io/tutorials/github-pages-blog/
 
+set -e
+
 echo -e "\033[0;32mDeploying updates to GitHub...\033[0m"
 
 # Build the project.
@@ -8,6 +10,12 @@ echo -e "\033[0;32mDeploying updates to GitHub...\033[0m"
 
 # Go To Public folder
 cd public
+
+# Clean
+git clean -f -d
+git reset --hard HEAD
+# Update
+git merge --ff-only origin master
 # Add changes to git.
 git add -A
 
