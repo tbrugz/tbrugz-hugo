@@ -81,3 +81,13 @@ blogdown::hugo_cmd("version")
 blogdown::hugo_cmd("config")
 blogdown::hugo_cmd("--help")
 ```
+
+*Packages*
+
+see [rpackages.md](rpackages.md)
+
+
+*Repo info*
+
+see [R/repo_utils.R](R/repo_utils.R)
+
