@@ -47,7 +47,7 @@ normal workflow
 
 files under `content` & `static`
 
-*Build site (in R)*
+*Build & preview local site (in R)*
 
 ```r
 blogdown::serve_site()
@@ -59,6 +59,12 @@ blogdown::serve_site()
 
 `git -C public diff`  
 `git -C public diff --stat`
+
+*Build production site (in R)*
+
+```r
+blogdown::build_site(local = FALSE)
+```
 
 *Deploy to Github (from "public" folder - should be a git submodule)*
 

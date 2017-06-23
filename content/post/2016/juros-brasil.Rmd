@@ -18,6 +18,11 @@ library(printr)
 #options(knitr.table.format = 'markdown')
 #options(digits = 6)
 #knitr::opts_chunk$set(fig.width=10, fig.height=7, warning=FALSE, message=FALSE)
+
+rootdir <- "../../../static/data"
+knitr::opts_chunk$set(root.dir = rootdir)
+knitr::opts_knit$set(root.dir = rootdir)
+
 knitr::opts_chunk$set(warning=FALSE, message=FALSE, out.width="100%")
 #setwd("~/proj/r-sandbox/economics")
 ```
@@ -29,7 +34,7 @@ e que tal informação não estaria completa visto que a notícia fala apenas da
 Bom, resolvi pegar os dados e fazer uns experimentos usando a linguagem [R](https://www.r-project.org/). Inicialmente transformei a tabela da página inicial do *tradingeconomics* num arquivo CSV e o carreguei (ver arquivo [tradingecon.csv](/data/2016/tradingecon.csv) - valores consultados em 22/dez/2016)
 
 ```{r prepare, message=F}
-tab <- read_csv("../../../static/data/2016/tradingecon.csv")
+tab <- read_csv("2016/tradingecon.csv")
 ```
 
 Juro real é o juro nominal menos a inflação:
