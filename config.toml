@@ -20,9 +20,9 @@ ignoreFiles = ["\\.Rmd$", "_files$", "_cache$"]
 #[[menu.main]]
 #	name = "About"
 #	url = "/about/"
-[[menu.main]]
-	name = "Bitbucket"
-	url = "https://bitbucket.org/tbrugz"
+#[[menu.main]]
+#	name = "Bitbucket"
+#	url = "https://bitbucket.org/tbrugz"
 [[menu.main]]
 	name = "GitHub"
 	url = "https://github.com/tbrugz"
@@ -69,7 +69,7 @@ ignoreFiles = ["\\.Rmd$", "_files$", "_cache$"]
 		homepage = true
 		email = "tbrugz@gmail.com"
 		behance = ""
-		bitbucket  ="tbrugz"
+		bitbucket = "tbrugz"
 		dribbble = ""
 		facebook = ""
 		flickr = ""
