@@ -70,7 +70,7 @@ para_reais <- function(valor, data) {
 }
 
 sm <- salario_minimo
-sm$vr <- NA
+sm$vr <- NA_real_
 
 for(i in 1:nrow(sm)) {
   sm[i, "vr"] <- para_reais(sm[i,"valor"][[1]], sm[i,"data"][[1]])
@@ -131,7 +131,7 @@ ipc$fc <- ipc_fcs()
 sm$fc <- numeric(nrow(sm))
 sm$fc_rows <- numeric(nrow(sm))
 sm$vr_atu <- numeric(nrow(sm))
-sm$ipc_dt <- numeric(nrow(sm))
+sm$ipc_dt <- as.Date(NA)
 for(i in 1:nrow(sm)) {
   dt <- sm[i, "data"][[1]]
   m <- month(dt)
@@ -155,7 +155,7 @@ ggplot(sm, aes(data, vr_atu)) + geom_line()
 Para deixar o gráfico mais interessante podemos incluir a informação do período político pelo qual o país passava:
 
 ```{r periodos}
-periodos <- data_frame(
+periodos <- tibble(
   id=c(1945,1964,1990,2003),
   periodo=c("1945-1964", "1964-Período Militar", "1990-Collor / FHC", "2003-Lula / Dilma"),
   dt_ini=ymd(c("1945-10-29", "1964-04-01", "1990-03-15", "2003-01-01")),
