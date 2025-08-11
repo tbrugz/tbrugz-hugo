@@ -78,6 +78,12 @@ blogdown::hugo_cmd("config")
 blogdown::hugo_cmd("--help")
 ```
 
+
+*Hugo tips*
+
+see [hugo.md](hugo.md)
+
+
 *Packages*
 
 see [rpackages.md](rpackages.md)

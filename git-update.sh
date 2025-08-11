@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 # see http://stackoverflow.com/a/31186538/616413
 
 #REPO_DIR="themes/hugo-type-theme/"

@@ -5,3 +5,6 @@
 
 blogdown
 themes
+
+content/post/**/*.html
+static/post/**/*.png
